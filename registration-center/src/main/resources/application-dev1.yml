@@ -1,0 +1,14 @@
+server:
+  port: 8777
+# 启动两个eureka，互相注册，实现高可用注册中心
+eureka:
+  instance:
+    hostname: localhost1
+    instance-id: eureka-1
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://localhost2:8666/eureka/
+spring:
+  application:
+    name: eureka-center
