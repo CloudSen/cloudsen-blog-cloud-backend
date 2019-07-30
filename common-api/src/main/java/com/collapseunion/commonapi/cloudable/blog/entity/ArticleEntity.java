@@ -1,0 +1,114 @@
+package com.collapseunion.commonapi.cloudable.blog.entity;
+
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
+
+import javax.persistence.*;
+import java.util.Collection;
+import java.util.Objects;
+
+/**
+ * 博客文章实体类
+ *
+ * @author CloudSen
+ */
+@Entity
+@Setter
+@ToString
+@Accessors(chain = true)
+@Table(name = "article", schema = "public", catalog = "cloudsen_blog")
+public class ArticleEntity {
+    private String id;
+    private String title;
+    private String summary;
+    private String imgUrl;
+    private String imgUrlMd;
+    private String content;
+    private Object createTime;
+    private Object updateTime;
+    private Boolean deleted;
+    private Collection<ArticleTagEntity> articlesAndTagsById;
+    private Collection<CommentEntity> commentsById;
+
+    @Id
+    @Column(name = "id", nullable = false, length = 36)
+    public String getId() {
+        return id;
+    }
+
+    @Basic
+    @Column(name = "title", nullable = false, length = 150)
+    public String getTitle() {
+        return title;
+    }
+
+    @Basic
+    @Column(name = "summary", nullable = false, length = 300)
+    public String getSummary() {
+        return summary;
+    }
+
+    @Basic
+    @Column(name = "img_url", nullable = false, length = 300)
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    @Basic
+    @Column(name = "img_url_md", nullable = false, length = 300)
+    public String getImgUrlMd() {
+        return imgUrlMd;
+    }
+
+    @Basic
+    @Column(name = "content", nullable = false, length = -1)
+    public String getContent() {
+        return content;
+    }
+
+    @Basic
+    @Column(name = "create_time", nullable = false)
+    public Object getCreateTime() {
+        return createTime;
+    }
+
+    @Basic
+    @Column(name = "update_time", nullable = false)
+    public Object getUpdateTime() {
+        return updateTime;
+    }
+
+    @Basic
+    @Column(name = "deleted", nullable = false)
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    @OneToMany(mappedBy = "articleByArticleId")
+    public Collection<ArticleTagEntity> getArticlesAndTagsById() {
+        return articlesAndTagsById;
+    }
+
+    @OneToMany(mappedBy = "articleByArticleId")
+    public Collection<CommentEntity> getCommentsById() {
+        return commentsById;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ArticleEntity that = (ArticleEntity) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+}
