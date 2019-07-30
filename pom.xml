@@ -12,6 +12,7 @@
         <module>hystrix-dashboard</module>
         <module>turbine</module>
         <module>zuul</module>
+        <module>cloudable</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -20,10 +21,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.collapse</groupId>
-    <artifactId>euclid</artifactId>
+    <artifactId>cloudsen-blog-cloud-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>euclid</name>
-    <description>A big data visualization platform based on Spring cloud microservices architecture</description>
+    <name>cloudsen-blog-cloud-backend</name>
+    <description>cloudsen's personal blog system based on Spring Cloud</description>
 
     <properties>
         <java.version>1.8</java.version>
