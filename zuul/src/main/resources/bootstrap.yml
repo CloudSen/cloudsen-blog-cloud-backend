@@ -19,7 +19,7 @@ spring:
     config:
       discovery:
         enabled: true
-        service-id: Euclid-Cloud-Config
+        service-id: cloudsen-blog-config-center
       label: master
       profile: dev
       fail-fast: true
@@ -39,7 +39,7 @@ spring:
     config:
       discovery:
         enabled: true
-        service-id: Euclid-Cloud-Config
+        service-id: cloudsen-blog-config-center
       label: master
       profile: dev2
       fail-fast: true
