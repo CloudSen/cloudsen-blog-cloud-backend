@@ -2,16 +2,16 @@ server:
   port: 8888
 spring:
   application:
-    name: Euclid-Cloud-Config
+    name: cloudsen-blog-config-center
   cloud:
     config:
       server:
         git:
-          uri: git@gitee.com:CollapseUnion/Euclid-Cloud-Config.git
+          uri: git@gitee.com:CollapseUnion/cloudsen-blog-config-center.git
           clone-on-start: true
           timeout: 2
           force-pull: true
-          basedir: D:\GitRepository\Euclid\configuration-center\local-clone
+          basedir: D:\GitRepository\cloudsen-blog-cloud-backend\local-clone
           search-paths: '{application}'
           passphrase: cloudsen
           default-label: master
@@ -84,4 +84,4 @@ eureka:
       defaultZone: http://localhost1:8777/eureka/,http://localhost2:8666/eureka/
   instance:
     prefer-ip-address: true
-    instance-id: Euclid-Cloud-Config
+    instance-id: cloudsen-blog-config-center
