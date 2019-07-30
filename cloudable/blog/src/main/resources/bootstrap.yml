@@ -1,0 +1,87 @@
+server:
+  port: 8700
+spring:
+  profiles:
+    active: dev
+  application:
+    name: cloudable-blog
+---
+server:
+  port: 8700
+spring:
+  profiles: dev
+  cloud:
+    config:
+      discovery:
+        service-id: cloudsen-blog-config-center
+        enabled: true
+      label: master
+      profile: dev
+      fail-fast: true
+eureka:
+  instance:
+    instance-id: cloudable-blog-dev
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://localhost1:8777/eureka/,http://localhost2:8666/eureka/
+---
+server:
+  port: 8701
+spring:
+  profiles: dev2
+  cloud:
+    config:
+      discovery:
+        service-id: cloudsen-blog-config-center
+        enabled: true
+      label: master
+      profile: dev2
+      fail-fast: true
+eureka:
+  instance:
+    instance-id: cloudable-blog-dev2
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://localhost1:8777/eureka/,http://localhost2:8666/eureka/
+---
+server:
+  port: 8700
+spring:
+  profiles: test
+  cloud:
+    config:
+      discovery:
+        service-id: cloudsen-blog-config-center
+        enabled: true
+      label: master
+      profile: test
+      fail-fast: true
+eureka:
+  instance:
+    instance-id: cloudable-blog-test
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://localhost1:8777/eureka/,http://localhost2:8666/eureka/
+---
+server:
+  port: 8700
+spring:
+  profiles: prod
+  cloud:
+    config:
+      discovery:
+        service-id: cloudsen-blog-config-center
+        enabled: true
+      label: master
+      profile: prod
+      fail-fast: true
+eureka:
+  instance:
+    instance-id: cloudable-blog-prod
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://localhost1:8777/eureka/,http://localhost2:8666/eureka/
