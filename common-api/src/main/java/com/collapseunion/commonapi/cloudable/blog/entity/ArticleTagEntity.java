@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 /**
- * 文章——标签 多对多实体类
+ * 文章-标签多对多关系表
  *
  * @author CloudSen
  */
@@ -16,7 +16,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @Accessors(chain = true)
-@Table(name = "article_tag", schema = "public", catalog = "cloudsen_blog")
+@Table(name = "article_tag", schema = "cloudable", catalog = "cloudsen_blog")
 public class ArticleTagEntity {
     private String id;
     private Object createTime;
@@ -70,11 +70,13 @@ public class ArticleTagEntity {
             return false;
         }
         ArticleTagEntity that = (ArticleTagEntity) o;
-        return id.equals(that.id);
+        return id.equals(that.id) &&
+                articleByArticleId.equals(that.articleByArticleId) &&
+                tagByTagId.equals(that.tagByTagId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, articleByArticleId, tagByTagId);
     }
 }

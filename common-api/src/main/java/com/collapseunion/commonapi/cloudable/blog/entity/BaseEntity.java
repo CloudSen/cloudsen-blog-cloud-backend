@@ -5,11 +5,10 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Objects;
 
 /**
- * 文章标签表
+ * 基础字段表
  *
  * @author CloudSen
  */
@@ -17,15 +16,12 @@ import java.util.Objects;
 @Setter
 @ToString
 @Accessors(chain = true)
-@Table(name = "tag", schema = "cloudable", catalog = "cloudsen_blog")
-public class TagEntity {
+@Table(name = "base", schema = "cloudable", catalog = "cloudsen_blog")
+public class BaseEntity {
     private String id;
     private Object createTime;
     private Object updateTime;
     private Boolean deleted;
-    private String name;
-    private String color;
-    private Collection<ArticleTagEntity> articleAndTagById;
 
     @Id
     @Column(name = "id", nullable = false, length = 36)
@@ -51,23 +47,6 @@ public class TagEntity {
         return deleted;
     }
 
-    @Basic
-    @Column(name = "name", nullable = false, length = 36)
-    public String getName() {
-        return name;
-    }
-
-    @Basic
-    @Column(name = "color", nullable = false, length = 30)
-    public String getColor() {
-        return color;
-    }
-
-    @OneToMany(mappedBy = "tagByTagId")
-    public Collection<ArticleTagEntity> getArticleAndTagById() {
-        return articleAndTagById;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -76,8 +55,8 @@ public class TagEntity {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        TagEntity tagEntity = (TagEntity) o;
-        return id.equals(tagEntity.id);
+        BaseEntity that = (BaseEntity) o;
+        return id.equals(that.id);
     }
 
     @Override

@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 /**
- * 博客文章实体类
+ * 博客文章表
  *
  * @author CloudSen
  */
@@ -17,24 +17,42 @@ import java.util.Objects;
 @Setter
 @ToString
 @Accessors(chain = true)
-@Table(name = "article", schema = "public", catalog = "cloudsen_blog")
+@Table(name = "article", schema = "cloudable", catalog = "cloudsen_blog")
 public class ArticleEntity {
     private String id;
+    private Object createTime;
+    private Object updateTime;
+    private Boolean deleted;
     private String title;
     private String summary;
     private String imgUrl;
     private String imgUrlMd;
     private String content;
-    private Object createTime;
-    private Object updateTime;
-    private Boolean deleted;
-    private Collection<ArticleTagEntity> articlesAndTagsById;
+    private Collection<ArticleTagEntity> articleAndTagById;
     private Collection<CommentEntity> commentsById;
 
     @Id
     @Column(name = "id", nullable = false, length = 36)
     public String getId() {
         return id;
+    }
+
+    @Basic
+    @Column(name = "create_time", nullable = false)
+    public Object getCreateTime() {
+        return createTime;
+    }
+
+    @Basic
+    @Column(name = "update_time", nullable = false)
+    public Object getUpdateTime() {
+        return updateTime;
+    }
+
+    @Basic
+    @Column(name = "deleted", nullable = false)
+    public Boolean getDeleted() {
+        return deleted;
     }
 
     @Basic
@@ -67,27 +85,9 @@ public class ArticleEntity {
         return content;
     }
 
-    @Basic
-    @Column(name = "create_time", nullable = false)
-    public Object getCreateTime() {
-        return createTime;
-    }
-
-    @Basic
-    @Column(name = "update_time", nullable = false)
-    public Object getUpdateTime() {
-        return updateTime;
-    }
-
-    @Basic
-    @Column(name = "deleted", nullable = false)
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
     @OneToMany(mappedBy = "articleByArticleId")
-    public Collection<ArticleTagEntity> getArticlesAndTagsById() {
-        return articlesAndTagsById;
+    public Collection<ArticleTagEntity> getArticleAndTagById() {
+        return articleAndTagById;
     }
 
     @OneToMany(mappedBy = "articleByArticleId")
@@ -104,11 +104,12 @@ public class ArticleEntity {
             return false;
         }
         ArticleEntity that = (ArticleEntity) o;
-        return id.equals(that.id);
+        return id.equals(that.id) &&
+                title.equals(that.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, title);
     }
 }
