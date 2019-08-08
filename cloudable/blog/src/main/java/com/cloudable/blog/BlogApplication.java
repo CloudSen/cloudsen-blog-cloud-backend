@@ -7,7 +7,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.data.web.config.EnableSpringDataWebSupport;
 
 /**
  * @author CloudSen
@@ -17,7 +16,6 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 @EnableEurekaClient
 @EnableCircuitBreaker
 @EnableFeignClients
-@EnableSpringDataWebSupport
 public class BlogApplication {
     public static final String APPLICATION_NAME = "cloudable-blog";
 
