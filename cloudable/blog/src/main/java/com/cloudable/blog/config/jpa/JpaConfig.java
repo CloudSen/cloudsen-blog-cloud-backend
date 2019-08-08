@@ -1,31 +1,28 @@
-package com.cloudable.blog.config.jpaconfig;
+package com.cloudable.blog.config.jpa;
 
 import com.cloudable.blog.config.dbconfig.DataSourceConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import javax.persistence.EntityManagerFactory;
 
 
 /**
- * Spring Data JPA 配置
+ * Spring Data JPA 配置（停用）
  *
  * @author CloudSen
  */
 @Slf4j
-@Configuration
 @EnableJpaRepositories(
         basePackages = "com.collapseunion.commonapi.cloudable.blog.repository",
         transactionManagerRef = "jpaTransactionManager"
 )
 @EnableTransactionManagement
+@Deprecated
+@Configuration
 public class JpaConfig {
 
     static {
@@ -46,14 +43,7 @@ public class JpaConfig {
         vendorAdapter.setGenerateDdl(false);
         factoryBean.setDataSource(dataSourceConfig.getDynamicDataSourceConfig());
         factoryBean.setJpaVendorAdapter(vendorAdapter);
-        factoryBean.setPackagesToScan("com.collapseunion.commonapi.cloudable.blog.repository");
+        factoryBean.setPackagesToScan("com.collapseunion.commonapi.cloudable.blog.entity");
         return factoryBean;
-    }
-
-    @Bean(name = "jpaTransactionManager")
-    public PlatformTransactionManager getPlatformTransactionManager(EntityManagerFactory entityManagerFactory) {
-        JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
-        jpaTransactionManager.setEntityManagerFactory(entityManagerFactory);
-        return jpaTransactionManager;
     }
 }
