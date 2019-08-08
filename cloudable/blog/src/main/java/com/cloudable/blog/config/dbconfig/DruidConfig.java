@@ -30,7 +30,7 @@ public class DruidConfig {
     @Scope("prototype")
     public JdkRegexpMethodPointcut druidStatPointcut() {
         JdkRegexpMethodPointcut pointcut = new JdkRegexpMethodPointcut();
-        pointcut.setPatterns("com.collapseunion.sysmanagement.service.*");
+        pointcut.setPatterns("com.cloudable.blog.service.*");
         return pointcut;
     }
 
