@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.collapseunion.commonapi.cloudable.blog.mapper.ArticleMapper">
+
+    <select id="listAllArticleSummary"
+            resultType="com.collapseunion.commonapi.cloudable.blog.dto.ArticleSummaryDto">
+        SELECT a.uuid uuid,
+
+        FROM t_article a
+                 LEFT JOIN
+             t_article_tag a_t
+             ON a_t.article_id = a.uuid
+                 LEFT JOIN
+             t_tag t
+             ON t.uuid = a_t.tag_id
+    </select>
+</mapper>
