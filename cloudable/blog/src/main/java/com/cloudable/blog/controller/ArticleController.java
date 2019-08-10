@@ -1,14 +1,15 @@
 package com.cloudable.blog.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cloudable.blog.BlogApplication;
 import com.cloudable.blog.service.IArticleService;
+import com.collapseunion.commonapi.cloudable.blog.dto.ArticleSummaryDto;
 import com.collapseunion.commonapi.cloudable.blog.entity.Article;
 import com.collapseunion.commonutils.globalresult.Result;
 import com.collapseunion.commonutils.globalresult.ResultUtil;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
@@ -30,8 +31,28 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
+    /**
+     * 直接获取所有文章摘要
+     *
+     * @return 所有文章摘要列表
+     */
     @GetMapping("")
-    public Result<Collection<Article>> getAllArticles() {
-        return ResultUtil.ok(this.articleService.list(), BlogApplication.APPLICATION_NAME);
+    public Result<Collection<ArticleSummaryDto>> listAllArticleSummary() {
+        return ResultUtil.ok(this.articleService.listAllArticleSummary(), BlogApplication.APPLICATION_NAME);
+    }
+
+    /**
+     * 分页查询文章摘要
+     *
+     * @return 当前页文章摘要列表
+     */
+    @PostMapping("/page")
+    public Result<IPage<ArticleSummaryDto>> pageArticleSummaryByCondition(@RequestBody Page<Article> page,
+                                                                          @RequestBody ArticleSummaryDto condition) {
+
+        return ResultUtil.ok(
+                this.articleService.pageArticleSummaryByCondition(page, condition),
+                BlogApplication.APPLICATION_NAME
+        );
     }
 }
