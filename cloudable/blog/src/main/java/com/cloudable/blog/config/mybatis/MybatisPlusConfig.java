@@ -30,13 +30,13 @@ public class MybatisPlusConfig {
     @Bean
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         Resource[] resources = new PathMatchingResourcePatternResolver()
-                .getResources("classpath*:mapper/cloudable/blog/*.xml");
+                .getResources("classpath*:cloudable/blog/*.xml");
         MybatisSqlSessionFactoryBean factoryBean = new MybatisSqlSessionFactoryBean();
         // 设置数据源
         factoryBean.setDataSource(dataSourceConfig.getDynamicDataSourceConfig());
         // 设置sql xml文件路径
         factoryBean.setMapperLocations(resources);
-        factoryBean.setTypeAliasesPackage("com.collapseunion.commonapi.cloudable.blog.mapper");
+        factoryBean.setTypeAliasesPackage("com.collapseunion.commonapi.cloudable.blog");
         return factoryBean.getObject();
     }
 
