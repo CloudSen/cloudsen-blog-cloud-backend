@@ -12,4 +12,21 @@
     <artifactId>common-utils</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+        <mybatis.plus.starter.version>3.1.2</mybatis.plus.starter.version>
+        <model.maper.version>2.3.0</model.maper.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>${model.maper.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${mybatis.plus.starter.version}</version>
+        </dependency>
+    </dependencies>
 </project>
