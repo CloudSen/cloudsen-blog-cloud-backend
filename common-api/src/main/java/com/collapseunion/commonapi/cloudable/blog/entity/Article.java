@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -62,8 +63,10 @@ public class Article implements Serializable {
      */
     private Boolean deleted;
 
+    @DateTimeFormat
     private LocalDateTime createTime;
 
+    @DateTimeFormat
     private LocalDateTime updateTime;
 
 
