@@ -15,10 +15,6 @@ public class ResultUtil {
         return new Result<>(Boolean.TRUE, String.valueOf(HttpStatus.OK.value()), "OK", provider);
     }
 
-    public static <T> Result<T> ok(String message, String provider) {
-        return new Result<>(Boolean.TRUE, String.valueOf(HttpStatus.OK.value()), message, provider);
-    }
-
     public static <T> Result<T> ok(String message, String code, String provider) {
         return new Result<>(Boolean.TRUE, code, message, provider);
     }
