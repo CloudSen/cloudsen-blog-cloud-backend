@@ -79,6 +79,7 @@
         <where>
             <include refid="commonWhere"/>
         </where>
+        ORDER BY a.create_time DESC
     </select>
 
     <select id="countArticleByCondition" resultType="java.lang.Integer">
