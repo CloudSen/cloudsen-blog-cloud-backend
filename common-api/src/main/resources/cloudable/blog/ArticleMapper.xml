@@ -2,16 +2,90 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.collapseunion.commonapi.cloudable.blog.mapper.ArticleMapper">
 
-    <select id="listAllArticleSummary"
-            resultType="com.collapseunion.commonapi.cloudable.blog.dto.ArticleSummaryDto">
-        SELECT a.uuid uuid,
+    <resultMap id="articleSummaryResult" type="com.collapseunion.commonapi.cloudable.blog.dto.ArticleSummaryDto">
+        <id property="uuid" column="article_uuid"/>
+        <result property="title" column="article_title"/>
+        <result property="summary" column="article_summary"/>
+        <result property="imgUrlMd" column="article_imgUrlMd"/>
+        <result property="createTime" column="article_createTime"/>
+        <result property="updateTime" column="article_updateTime"/>
+        <collection property="tags" ofType="com.collapseunion.commonapi.cloudable.blog.dto.TagDto"
+                    resultMap="articleTagResult" columnPrefix="tag_"/>
+    </resultMap>
 
+    <resultMap id="articleTagResult" type="com.collapseunion.commonapi.cloudable.blog.dto.TagDto">
+        <id property="uuid" column="uuid"/>
+        <result property="name" column="name"/>
+        <result property="color" column="color"/>
+    </resultMap>
+
+    <sql id="articleSummaryAndTagSql">
+        a.uuid article_uuid,
+        a.title article_title,
+        a.summary article_summary,
+        a.img_url_md article_imgUrlMd,
+        a.create_time article_createTime,
+        a.update_time article_updateTime,
+        t.uuid tag_uuid,
+        t.name tag_name,
+        t.color tag_color
+    </sql>
+
+    <sql id="articleAndTagSql">
+        a.content article_content,
+        a.img_url article_imgUrl,
+        <include refid="articleSummaryAndTagSql"/>
+    </sql>
+
+    <sql id="commonWhere">
+        <if test="condition != null">
+            <if test="condition.uuid != null and condition.uuid != ''">
+                AND a.uuid = #{condition.uuid}
+            </if>
+            <if test="condition.title != null and condition.title != ''">
+                AND a.title like CONCAT('%',#{condition.title},'%')
+            </if>
+            <if test="condition.summary != null and condition.summary != ''">
+                AND a.summary like CONCAT('%',#{condition.summary},'%')
+            </if>
+            <if test="condition.createTime != null">
+                <![CDATA[
+                AND DATE_FORMAT(DATE(a.create_time), '%Y-%m-%d') <= STR_TO_DATE(#{condition.createTime}, '%Y-%m-%d')
+                ]]>
+            </if>
+        </if>
+    </sql>
+
+    <select id="listAllArticleSummary"
+            resultMap="articleSummaryResult">
+        SELECT
+        <include refid="articleSummaryAndTagSql"/>
         FROM t_article a
-                 LEFT JOIN
-             t_article_tag a_t
-             ON a_t.article_id = a.uuid
-                 LEFT JOIN
-             t_tag t
-             ON t.uuid = a_t.tag_id
+        LEFT JOIN t_article_tag a_t ON a_t.article_id = a.uuid
+        LEFT JOIN t_tag t ON t.uuid = a_t.tag_id
+        AND a.deleted = 0
+        AND t.deleted = 0
+    </select>
+
+    <select id="pageArticleSummaryByCondition"
+            resultMap="articleSummaryResult">
+        SELECT
+        <include refid="articleSummaryAndTagSql"/>
+        FROM t_article a
+        LEFT JOIN t_article_tag a_t ON a_t.article_id = a.uuid
+        LEFT JOIN t_tag t ON t.uuid = a_t.tag_id
+        AND a.deleted = 0
+        AND t.deleted = 0
+        <where>
+            <include refid="commonWhere"/>
+        </where>
+    </select>
+
+    <select id="countArticleByCondition" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM t_article a
+        <where>
+            <include refid="commonWhere"/>
+        </where>
     </select>
 </mapper>
