@@ -6,17 +6,14 @@ import lombok.experimental.Accessors;
 import javax.validation.constraints.NotEmpty;
 
 /**
- * 文章标签DTO
+ * 文章标签摘要DTO
  *
  * @author CloudSen
  */
 @Data
 @Accessors(chain = true)
-public class TagDto {
+public class TagSummaryDto {
 
     @NotEmpty(message = "标签ID不能为空")
     private String uuid;
-    @NotEmpty(message = "标签名不能为空")
-    private String name;
-    private String color;
 }
