@@ -8,8 +8,12 @@ import com.collapseunion.commonutils.globalresult.ResultCode;
 import com.collapseunion.commonutils.globalresult.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -29,6 +33,7 @@ public class GlobalExceptionHandler {
      * @return 全局统一返回对象
      */
     @ExceptionHandler(value = BusinessException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Result<BusinessException> businessExceptionHandler(BusinessException e) {
         log.error("[ ERROR ] Exception Occurred: {}", ExceptionUtils.getFullStackTrace(e));
         ExceptionEnum exceptionEnum = ExceptionEnum.parseExceptionClass(e.getClass());
@@ -36,7 +41,25 @@ public class GlobalExceptionHandler {
         return ResultUtil.error(resultCode.getMessage(), resultCode.getCode(), BlogApplication.APPLICATION_NAME);
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result<String> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
+        return ResultUtil.error(e.getMessage(), BlogApplication.APPLICATION_NAME);
+    }
 
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result<String> handleConstraintViolationException(ConstraintViolationException e) {
+        return ResultUtil.error(e.getMessage(), BlogApplication.APPLICATION_NAME);
+    }
+
+    /**
+     * 其他异常
+     *
+     * @param e 其他异常
+     * @return 全局统一返回对象
+     */
     @ExceptionHandler(value = Exception.class)
     public Result<Exception> exceptionHandler(Exception e) {
         log.error("[ ERROR ] Exception Occurred: {}", ExceptionUtils.getFullStackTrace(e));
