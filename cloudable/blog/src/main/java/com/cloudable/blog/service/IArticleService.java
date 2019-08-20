@@ -36,5 +36,5 @@ public interface IArticleService extends IService<Article> {
      * @param condition 查询条件
      * @return 部分文章的摘要
      */
-    IPage<ArticleSummaryDto> pageArticleSummaryByCondition(Page<Article> page, ArticleSummaryDto condition);
+    IPage<ArticleSummaryDto> pageArticleSummaryByCondition(Page<ArticleSummaryDto> page, ArticleSummaryDto condition);
 }

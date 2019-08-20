@@ -6,12 +6,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cloudable.blog.BlogApplication;
 import com.cloudable.blog.service.IArticleService;
 import com.collapseunion.commonapi.cloudable.blog.dto.ArticleSummaryDto;
-import com.collapseunion.commonapi.cloudable.blog.entity.Article;
+import com.collapseunion.commonutils.JsonUtil;
 import com.collapseunion.commonutils.globalresult.Result;
 import com.collapseunion.commonutils.globalresult.ResultUtil;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * <p>
@@ -42,14 +43,14 @@ public class ArticleController {
     }
 
     /**
-     * 分页查询文章摘要
+     * 分页查询文章摘要，不给查询条件就是分页全部文章摘要
      *
      * @return 当前页文章摘要列表
      */
     @PostMapping("/page")
-    public Result<IPage<ArticleSummaryDto>> pageArticleSummaryByCondition(@RequestBody Page<Article> page,
-                                                                          @RequestBody ArticleSummaryDto condition) {
-
+    public Result<IPage<ArticleSummaryDto>> pageArticleSummaryByCondition(@RequestBody Map<String, Map<String, Object>> params) {
+        ArticleSummaryDto condition = JsonUtil.map2Obj(params.get("condition"), ArticleSummaryDto.class);
+        Page<ArticleSummaryDto> page = JsonUtil.map2MybatisPage(params.get("page"), ArticleSummaryDto.class);
         return ResultUtil.ok(
                 this.articleService.pageArticleSummaryByCondition(page, condition),
                 BlogApplication.APPLICATION_NAME
