@@ -5,10 +5,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cloudable.blog.BlogApplication;
 import com.cloudable.blog.service.IArticleService;
+import com.collapseunion.commonapi.cloudable.blog.dto.ArticleModifyDto;
 import com.collapseunion.commonapi.cloudable.blog.dto.ArticleSummaryDto;
 import com.collapseunion.commonutils.JsonUtil;
 import com.collapseunion.commonutils.globalresult.Result;
 import com.collapseunion.commonutils.globalresult.ResultUtil;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -53,6 +55,14 @@ public class ArticleController {
         Page<ArticleSummaryDto> page = JsonUtil.map2MybatisPage(params.get("page"), ArticleSummaryDto.class);
         return ResultUtil.ok(
                 this.articleService.pageArticleSummaryByCondition(page, condition),
+                BlogApplication.APPLICATION_NAME
+        );
+    }
+
+    @PostMapping("")
+    public Result<String> saveOrUpdateArticle(@Validated @RequestBody ArticleModifyDto articleModifyDto) {
+        return ResultUtil.ok(
+                this.articleService.createOrUpdateArticle(articleModifyDto),
                 BlogApplication.APPLICATION_NAME
         );
     }

@@ -3,6 +3,7 @@ package com.cloudable.blog.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.collapseunion.commonapi.cloudable.blog.dto.ArticleModifyDto;
 import com.collapseunion.commonapi.cloudable.blog.dto.ArticleSummaryDto;
 import com.collapseunion.commonapi.cloudable.blog.entity.Article;
 
@@ -37,4 +38,12 @@ public interface IArticleService extends IService<Article> {
      * @return 部分文章的摘要
      */
     IPage<ArticleSummaryDto> pageArticleSummaryByCondition(Page<ArticleSummaryDto> page, ArticleSummaryDto condition);
+
+    /**
+     * 保存新文章或更新旧文章，并返回ID
+     *
+     * @param articleModifyDto 新文章前台数据
+     * @return 新文章的ID
+     */
+    String createOrUpdateArticle(ArticleModifyDto articleModifyDto);
 }
