@@ -1,5 +1,6 @@
 package com.cloudable.blog.config.exception;
 
+import com.cloudable.blog.BlogApplication;
 import com.collapseunion.commonutils.customexceptions.BusinessException;
 import com.collapseunion.commonutils.customexceptions.ExceptionEnum;
 import com.collapseunion.commonutils.globalresult.Result;
@@ -32,6 +33,13 @@ public class GlobalExceptionHandler {
         log.error("[ ERROR ] Exception Occurred: {}", ExceptionUtils.getFullStackTrace(e));
         ExceptionEnum exceptionEnum = ExceptionEnum.parseExceptionClass(e.getClass());
         ResultCode resultCode = exceptionEnum.getResultCode();
-        return ResultUtil.error(resultCode.getMessage(), resultCode.getCode());
+        return ResultUtil.error(resultCode.getMessage(), resultCode.getCode(), BlogApplication.APPLICATION_NAME);
+    }
+
+
+    @ExceptionHandler(value = Exception.class)
+    public Result<Exception> exceptionHandler(Exception e) {
+        log.error("[ ERROR ] Exception Occurred: {}", ExceptionUtils.getFullStackTrace(e));
+        return ResultUtil.error(e.toString(), BlogApplication.APPLICATION_NAME);
     }
 }
