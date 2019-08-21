@@ -30,6 +30,17 @@ public interface IArticleService extends IService<Article> {
 
     /**
      * <p>
+     * 分页条件查询文章摘要和它的标签
+     * </p>
+     *
+     * @param page      分页参数
+     * @param condition 查询条件
+     * @return 部分文章的摘要
+     */
+    IPage<ArticleSummaryDto> pageArticleSummaryAndTagByCondition(Page<ArticleSummaryDto> page, ArticleSummaryDto condition);
+
+    /**
+     * <p>
      * 分页条件查询文章摘要
      * </p>
      *

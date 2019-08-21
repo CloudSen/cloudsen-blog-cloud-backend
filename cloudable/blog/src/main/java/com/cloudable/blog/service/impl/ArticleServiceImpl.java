@@ -1,6 +1,7 @@
 package com.cloudable.blog.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -26,7 +27,7 @@ import java.util.List;
  * @since 2019-08-08
  */
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements IArticleService {
 
     private final IArticleTagService articleTagService;
@@ -41,12 +42,28 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     @Override
-    public IPage<ArticleSummaryDto> pageArticleSummaryByCondition(Page<ArticleSummaryDto> page, ArticleSummaryDto condition) {
+    public IPage<ArticleSummaryDto> pageArticleSummaryAndTagByCondition(Page<ArticleSummaryDto> page, ArticleSummaryDto condition) {
+        // 先对文章进行分页查询
         page.setOptimizeCountSql(false);
-        IPage<ArticleSummaryDto> articleSummaryDtoPage = this.baseMapper.pageArticleSummaryByCondition(page, condition);
+        page.setSearchCount(false);
+        IPage<ArticleSummaryDto> articleSummaryDtoPage = this.baseMapper.pageArticleSummaryAndTagByCondition(page, condition);
         Integer articleTotal = this.baseMapper.countArticleByCondition(condition);
         articleSummaryDtoPage.setTotal(articleTotal);
         return articleSummaryDtoPage;
+    }
+
+    @Override
+    public IPage<ArticleSummaryDto> pageArticleSummaryByCondition(Page<ArticleSummaryDto> page, ArticleSummaryDto condition) {
+        // 先对文章进行分页查询
+        IPage<ArticleSummaryDto> articlePage = this.baseMapper.pageArticleSummaryByCondition(page, condition);
+        List<ArticleSummaryDto> articles = articlePage.getRecords();
+        if (CollectionUtils.isNotEmpty(articles)) {
+            articles.forEach(articleSummaryDto -> {
+                articleSummaryDto.setTags(this.articleTagService.getTagByArticleId(articleSummaryDto.getUuid()));
+            });
+        }
+        articlePage.setRecords(articles);
+        return articlePage;
     }
 
     @Override
