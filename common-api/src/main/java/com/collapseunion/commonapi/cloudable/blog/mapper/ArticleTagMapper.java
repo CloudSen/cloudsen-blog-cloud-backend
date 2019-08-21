@@ -1,7 +1,11 @@
 package com.collapseunion.commonapi.cloudable.blog.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.collapseunion.commonapi.cloudable.blog.dto.TagDto;
 import com.collapseunion.commonapi.cloudable.blog.entity.ArticleTag;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,11 @@ import com.collapseunion.commonapi.cloudable.blog.entity.ArticleTag;
  */
 public interface ArticleTagMapper extends BaseMapper<ArticleTag> {
 
+    /**
+     * 根据文章ID查询对应的文章标签
+     *
+     * @param articleId 文章UUID
+     * @return 对应的文章标签列表
+     */
+    List<TagDto> getTagByArticleId(@Param("articleId") String articleId);
 }

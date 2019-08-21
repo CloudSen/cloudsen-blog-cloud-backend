@@ -2,4 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.collapseunion.commonapi.cloudable.blog.mapper.ArticleTagMapper">
 
+    <select id="getTagByArticleId" resultType="com.collapseunion.commonapi.cloudable.blog.dto.TagDto">
+        SELECT
+        t.uuid uuid,
+        t.`name` `name`,
+        t.color color
+        FROM
+        t_article_tag a_t
+        LEFT JOIN t_tag t ON t.uuid = a_t.tag_id
+        WHERE
+        a_t.article_id = #{articleId}
+        AND t.deleted = 0
+        AND a_t.deleted = 0;
+    </select>
 </mapper>
