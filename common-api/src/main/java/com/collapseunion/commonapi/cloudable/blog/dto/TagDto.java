@@ -18,5 +18,6 @@ public class TagDto {
     private String uuid;
     @NotEmpty(message = "标签名不能为空")
     private String name;
+    @NotEmpty(message = "标签颜色css不能为空")
     private String color;
 }
