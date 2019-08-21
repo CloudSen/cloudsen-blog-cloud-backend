@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.collapseunion.commonapi.cloudable.blog.mapper.ArticleMapper">
 
+    <!--  文章不带标签的摘要信息  -->
     <resultMap id="articleSummarySimpleResult" type="com.collapseunion.commonapi.cloudable.blog.dto.ArticleSummaryDto">
         <id property="uuid" column="article_uuid"/>
         <result property="title" column="article_title"/>
@@ -11,6 +12,7 @@
         <result property="updateTime" column="article_updateTime"/>
     </resultMap>
 
+    <!--  文章带标签的摘要信息  -->
     <resultMap id="articleSummaryResult" type="com.collapseunion.commonapi.cloudable.blog.dto.ArticleSummaryDto">
         <id property="uuid" column="article_uuid"/>
         <result property="title" column="article_title"/>
@@ -22,6 +24,21 @@
                     resultMap="articleTagResult" columnPrefix="tag_"/>
     </resultMap>
 
+    <!--  文章详情信息  -->
+    <resultMap id="articleDetailResult" type="com.collapseunion.commonapi.cloudable.blog.dto.ArticleDetailDto">
+        <id property="uuid" column="article_uuid"/>
+        <result property="title" column="article_title"/>
+        <result property="summary" column="article_summary"/>
+        <result property="content" column="article_content"/>
+        <result property="imgUrlMd" column="article_imgUrlMd"/>
+        <result property="imgUrl" column="article_imgUrl"/>
+        <result property="createTime" column="article_createTime"/>
+        <result property="updateTime" column="article_updateTime"/>
+        <collection property="tags" ofType="com.collapseunion.commonapi.cloudable.blog.dto.TagDto"
+                    resultMap="articleTagResult" columnPrefix="tag_"/>
+    </resultMap>
+
+    <!--  文章对应的标签信息  -->
     <resultMap id="articleTagResult" type="com.collapseunion.commonapi.cloudable.blog.dto.TagDto">
         <id property="uuid" column="uuid"/>
         <result property="name" column="name"/>
@@ -132,5 +149,19 @@
         <where>
             <include refid="commonWhere"/>
         </where>
+    </select>
+
+    <select id="findArticleById" resultMap="articleDetailResult">
+        SELECT
+        <include refid="articleAndTagSql"/>
+        FROM
+        t_article a
+        LEFT JOIN t_article_tag a_t ON a_t.article_id = a.uuid
+        LEFT JOIN t_tag t ON t.uuid = a_t.tag_id
+        WHERE
+        a_t.article_id = #{uuid}
+        AND a.deleted = 0
+        AND a_t.deleted = 0
+        AND t.deleted = 0
     </select>
 </mapper>

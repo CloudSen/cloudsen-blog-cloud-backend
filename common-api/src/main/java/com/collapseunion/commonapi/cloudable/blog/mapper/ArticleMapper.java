@@ -3,6 +3,7 @@ package com.collapseunion.commonapi.cloudable.blog.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.collapseunion.commonapi.cloudable.blog.dto.ArticleDetailDto;
 import com.collapseunion.commonapi.cloudable.blog.dto.ArticleSummaryDto;
 import com.collapseunion.commonapi.cloudable.blog.entity.Article;
 import org.apache.ibatis.annotations.Param;
@@ -49,4 +50,12 @@ public interface ArticleMapper extends BaseMapper<Article> {
      * @return 文章条数
      */
     Integer countArticleByCondition(@Param("condition") ArticleSummaryDto condition);
+
+    /**
+     * 根据文章ID查询详情
+     *
+     * @param uuid 文章UUID
+     * @return 文章详情
+     */
+    ArticleDetailDto findArticleById(@Param("uuid") String uuid);
 }
