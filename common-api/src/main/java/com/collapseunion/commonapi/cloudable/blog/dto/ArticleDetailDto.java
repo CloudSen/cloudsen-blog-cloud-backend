@@ -27,7 +27,7 @@ public class ArticleDetailDto {
     /**
      * 文章是否已过期
      */
-    private Boolean depreted = false;
+    private Boolean deprecated = false;
     /**
      * 上一篇文章
      */
