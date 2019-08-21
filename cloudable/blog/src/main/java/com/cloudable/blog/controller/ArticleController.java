@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cloudable.blog.BlogApplication;
 import com.cloudable.blog.service.IArticleService;
+import com.collapseunion.commonapi.cloudable.blog.dto.ArticleDetailDto;
 import com.collapseunion.commonapi.cloudable.blog.dto.ArticleModifyDto;
 import com.collapseunion.commonapi.cloudable.blog.dto.ArticleSummaryDto;
 import com.collapseunion.commonutils.JsonUtil;
@@ -63,6 +64,14 @@ public class ArticleController {
     public Result<String> saveOrUpdateArticle(@Validated @RequestBody ArticleModifyDto articleModifyDto) {
         return ResultUtil.ok(
                 this.articleService.createOrUpdateArticle(articleModifyDto),
+                BlogApplication.APPLICATION_NAME
+        );
+    }
+
+    @GetMapping("/{uuid}")
+    public Result<ArticleDetailDto> findArticleById(@PathVariable String uuid) {
+        return ResultUtil.ok(
+                this.articleService.findArticleById(uuid),
                 BlogApplication.APPLICATION_NAME
         );
     }

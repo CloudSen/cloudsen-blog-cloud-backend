@@ -3,6 +3,7 @@ package com.cloudable.blog.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.collapseunion.commonapi.cloudable.blog.dto.ArticleDetailDto;
 import com.collapseunion.commonapi.cloudable.blog.dto.ArticleModifyDto;
 import com.collapseunion.commonapi.cloudable.blog.dto.ArticleSummaryDto;
 import com.collapseunion.commonapi.cloudable.blog.entity.Article;
@@ -57,4 +58,12 @@ public interface IArticleService extends IService<Article> {
      * @return 新文章的ID
      */
     String createOrUpdateArticle(ArticleModifyDto articleModifyDto);
+
+    /**
+     * 通过文章ID查找文章详情
+     *
+     * @param articleId 文章UUID
+     * @return 文章详情
+     */
+    ArticleDetailDto findArticleById(String articleId);
 }

@@ -7,16 +7,22 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cloudable.blog.service.IArticleService;
 import com.cloudable.blog.service.IArticleTagService;
+import com.collapseunion.commonapi.cloudable.blog.dto.ArticleDetailDto;
 import com.collapseunion.commonapi.cloudable.blog.dto.ArticleModifyDto;
 import com.collapseunion.commonapi.cloudable.blog.dto.ArticleSummaryDto;
 import com.collapseunion.commonapi.cloudable.blog.entity.Article;
 import com.collapseunion.commonapi.cloudable.blog.entity.ArticleTag;
 import com.collapseunion.commonapi.cloudable.blog.mapper.ArticleMapper;
+import com.collapseunion.commonutils.customexceptions.ArticleNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * <p>
@@ -27,6 +33,7 @@ import java.util.List;
  * @since 2019-08-08
  */
 @Service
+@Slf4j
 @Transactional(rollbackFor = Exception.class)
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements IArticleService {
 
@@ -78,5 +85,21 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         }
         articleTagService.saveBatch(articleModifyDto.toArticleTags(article.getUuid()));
         return article.getUuid();
+    }
+
+    @Override
+    public ArticleDetailDto findArticleById(String articleId) {
+        ArticleDetailDto articleDetailDto = Optional.ofNullable(this.baseMapper.findArticleById(articleId))
+                .orElseThrow(ArticleNotFoundException::new);
+        LocalDateTime updateTime = articleDetailDto.getUpdateTime();
+        LocalDateTime today = LocalDateTime.now();
+        long durationDays = Duration.between(updateTime, today).toDays();
+        if (durationDays > Constants.WARN_DURATION_DAYS) {
+            articleDetailDto.setDeprecated(true);
+        }
+        // TODO 根据创建时间，得到上一篇文章和下一篇文章
+        log.info(Constants.ARTICLE_DURATION_DAYS, articleDetailDto.getTitle(), durationDays);
+        log.info(Constants.ARTICLE_CONTENT, articleDetailDto.getTitle(), articleDetailDto.getContent());
+        return articleDetailDto;
     }
 }
