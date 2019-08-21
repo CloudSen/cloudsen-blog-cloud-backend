@@ -15,7 +15,14 @@ public enum ExceptionEnum {
      * 参数无效异常
      */
     PARAMETER_INVALID(ParameterInvalidException.class, HttpStatus.BAD_REQUEST, ResultCode.PARAMETER_IS_INVALID),
-    DATA_NOT_FOUND(DataNotFoundException.class, HttpStatus.NOT_FOUND, ResultCode.DATA_NOT_FOUNT);
+    /**
+     * 数据未找到异常
+     */
+    DATA_NOT_FOUND(DataNotFoundException.class, HttpStatus.NOT_FOUND, ResultCode.DATA_NOT_FOUNT),
+    /**
+     * 文章未找到异常
+     */
+    ARTICLE_NOT_FOUND(ArticleNotFoundException.class, HttpStatus.NOT_FOUND, ResultCode.ARTICLE_NOT_FOUND);
 
     private Class<? extends BusinessException> exceptionClass;
     private HttpStatus httpStatus;

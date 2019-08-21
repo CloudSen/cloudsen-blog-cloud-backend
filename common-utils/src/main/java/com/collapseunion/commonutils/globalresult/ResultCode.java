@@ -15,7 +15,8 @@ public enum ResultCode {
      */
     PARAMETER_IS_INVALID("0001", "参数无效"),
     FAILED_TO_HANDLE("0002", "处理失败"),
-    DATA_NOT_FOUNT("0003", "数据不存在");
+    DATA_NOT_FOUNT("0003", "数据不存在"),
+    ARTICLE_NOT_FOUND("0004", "文章不存在，或已被删除！");
 
     private String code;
     private String message;
