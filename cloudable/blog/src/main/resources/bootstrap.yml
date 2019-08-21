@@ -5,6 +5,10 @@ spring:
     active: dev
   application:
     name: cloudable-blog
+logging:
+  level:
+    com.collapseunion.commonapi.cloudable.blog.mapper: trace
+    com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor: trace
 ---
 server:
   port: 8700
