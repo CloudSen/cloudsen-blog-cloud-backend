@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.cloudable.blog.config.dbconfig.DataSourceConfig;
+import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
@@ -41,6 +42,7 @@ public class MybatisPlusConfig {
         // 设置sql xml文件路径
         factoryBean.setMapperLocations(resources);
         factoryBean.setTypeAliasesPackage("com.collapseunion.commonapi.cloudable.blog");
+        factoryBean.setPlugins(new Interceptor[]{paginationInterceptor()});
         return factoryBean.getObject();
     }
 
@@ -49,7 +51,6 @@ public class MybatisPlusConfig {
      */
     @Bean
     public PaginationInterceptor paginationInterceptor() {
-        // 最大单页限制数量，默认 500 条，小于 0 如 -1 不受限制 paginationInterceptor.setLimit()
         return new PaginationInterceptor();
     }
 
